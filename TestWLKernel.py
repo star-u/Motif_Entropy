@@ -1,6 +1,6 @@
 """
 =========================================================================
-Graph classification on MUTAG using the Weisfeiler-Lehman subtree kernel.
+Graph classification on different dataset using the Weisfeiler-Lehman subtree kernel.
 =========================================================================
 
 Script makes use of :class:`grakel.WeisfeilerLehman`, :class:`grakel.VertexHistogram`
@@ -22,29 +22,29 @@ from grakel.kernels import WeisfeilerLehman, VertexHistogram
 from sklearn.model_selection import ShuffleSplit
 
 # Loads the MUTAG dataset
-test_dataset = {"1": "MUTAG", "2": "NCI109", "3": "PTC_FM", "4": "PTC_FR", "5": "PTC_MM", "6": "PTC_MR", "7": "PROTEINS"}
+test_dataset = {"1": "MUTAG", "2": "NCI109", "3": "PTC_FM", "4": "PTC_FR", "5": "PTC_MM", "6": "PTC_MR",
+                "7": "PROTEINS"}
 
 for key, value in test_dataset.items():
-        dataset = fetch_dataset(value, verbose=False)
-        G, y = dataset.data, dataset.target
+    dataset = fetch_dataset(value, verbose=False)
+    G, y = dataset.data, dataset.target
 
-        # Splits the dataset into a training and a test set
-        G_train, G_test, y_train, y_test = train_test_split(G, y, test_size=0.1, random_state=42)
+    # Splits the dataset into a training and a test set
+    G_train, G_test, y_train, y_test = train_test_split(G, y, test_size=0.1, random_state=42)
 
-        # Uses the Weisfeiler-Lehman subtree kernel to generate the kernel matrices
-        gk = WeisfeilerLehman(n_iter=4, base_graph_kernel=VertexHistogram, normalize=True)
-        K_train = gk.fit_transform(G_train)
-        K_test = gk.transform(G_test)
+    # Uses the Weisfeiler-Lehman subtree kernel to generate the kernel matrices
+    gk = WeisfeilerLehman(n_iter=4, base_graph_kernel=VertexHistogram, normalize=True)
+    K_train = gk.fit_transform(G_train)
+    K_test = gk.transform(G_test)
 
-        # Uses the SVM classifier to perform classification
-        clf = SVC(kernel="precomputed")
-        clf.fit(K_train, y_train)
-        y_pred = clf.predict(K_test)
+    # Uses the SVM classifier to perform classification
+    clf = SVC(kernel="precomputed")
+    clf.fit(K_train, y_train)
+    y_pred = clf.predict(K_test)
 
-        # Computes and prints the classification accuracy
-        acc = accuracy_score(y_test, y_pred)
-        print("{}'s Accuracy: ".format(value), str(round(acc * 100, 2)) + "%")
-
+    # Computes and prints the classification accuracy
+    acc = accuracy_score(y_test, y_pred)
+    print("{}: {}'s Accuracy: ".format(key, value), str(round(acc * 100, 2)) + "%")
 
 # print(G,y)
 
