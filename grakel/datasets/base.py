@@ -337,7 +337,7 @@ def read_data(
     else:
         for i in range(1, len(Graphs)+1):
             Gs.append([Graphs[i], node_labels[i], edge_labels[i]])
-
+    # print(Gs[0])
     if with_classes:
         classes = []
         with open(graph_classes_path, "r") as f:

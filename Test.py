@@ -8,7 +8,7 @@ A = np.array([[0, 1, 1, 0, 0],
               [1, 0, 0, 0, 1],
               [0, 1, 0, 0, 1],
               [0, 1, 1, 1, 0]])
-
+print(A)
 num_motif, num_node = count_Motifs(A)
 # print(num_node)
 

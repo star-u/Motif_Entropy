@@ -134,7 +134,7 @@ class WeisfeilerLehman(Kernel):
         elif hasattr(self, '_X_diag'):
             # Clean _X_diag value
             delattr(self, '_X_diag')
-
+        # print(X)
         # Input validation and parsing
         if not isinstance(X, collections.Iterable):
             raise TypeError('input must be an iterable\n')
@@ -183,9 +183,9 @@ class WeisfeilerLehman(Kernel):
             if nx == 0:
                 raise ValueError('parsed input is empty')
 
-        # Save the number of "fitted" graphs.
+        # Save the number of "fitted" graphs. eg:MUTAG 188*0.9=169
         self._nx = nx
-
+        # print(nx)
         # get all the distinct values of current labels
         WL_labels_inverse = dict()
 
@@ -198,7 +198,8 @@ class WeisfeilerLehman(Kernel):
         # Initalize an inverse dictionary of labels for all iterations
         self._inv_labels = dict()
         self._inv_labels[0] = WL_labels_inverse
-
+        # print(WL_labels_inverse)
+        # print(label_count)
         def generate_graphs(label_count, WL_labels_inverse):
             new_graphs = list()
             for j in range(nx):
@@ -241,6 +242,7 @@ class WeisfeilerLehman(Kernel):
                 yield new_graphs
 
         base_graph_kernel = {i: self._base_graph_kernel(**self._params) for i in range(self._n_iter)}
+        # print(base_graph_kernel)
         if self._parallel is None:
             if self._method_calling == 1:
                 for (i, g) in enumerate(generate_graphs(label_count, WL_labels_inverse)):
