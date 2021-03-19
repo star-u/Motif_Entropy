@@ -242,6 +242,7 @@ def read_data(
     """
     indicator_path = "./"+str(name)+"/"+str(name)+"_graph_indicator.txt"
     edges_path = "./" + str(name) + "/" + str(name) + "_A.txt"
+    # node_labels_path = "./" + str(name) + "/" + str(name) + "_node_labels.txt"
     node_labels_path = "./" + str(name) + "/" + str(name) + "_node_labels.txt"
     node_attributes_path = "./"+str(name)+"/"+str(name)+"_node_attributes.txt"
     edge_labels_path = "./" + str(name) + "/" + str(name) + "_edge_labels.txt"
@@ -337,7 +338,8 @@ def read_data(
     else:
         for i in range(1, len(Graphs)+1):
             Gs.append([Graphs[i], node_labels[i], edge_labels[i]])
-    # print(Gs[0])
+
+    # print(Gs[0][1])
     if with_classes:
         classes = []
         with open(graph_classes_path, "r") as f:

@@ -9,7 +9,7 @@ from __future__ import print_function
 
 from sklearn.preprocessing import StandardScaler
 
-print(__doc__)
+# print(__doc__)
 
 import numpy as np
 
@@ -28,7 +28,7 @@ for key, value in test_dataset.items():
     dataset = fetch_dataset(value, verbose=False)
     G, y = dataset.data, dataset.target
     # print(len(G))
-    # print(G[0][1])
+    print(G[0][1])
 
     # 合并字典
     # store = dict(G[0][1])

@@ -16,6 +16,9 @@ import torch
 from tkinter import _flatten
 from MotifCount import *
 from entropy import *
+import itertools
+import operator
+import collections
 
 # Loads the MUTAG dataset
 test_dataset = {"1": "MUTAG"}
@@ -24,7 +27,7 @@ for key, value in test_dataset.items():
     dataset = fetch_dataset(value, verbose=False)
     G, y = dataset.data, dataset.target
 
-data = read_data_txt(value)
+data = read_data_txt(test_dataset["1"])
 graph_ids = set(data['_graph_indicator.txt'])
 ADJACENCY_SUFFIX = '_A.txt'
 adj = data[ADJACENCY_SUFFIX]
@@ -125,15 +128,16 @@ def get_pro():
         min_label = min(G[g_id - 1][1].values())
 
         label = [None] * (max_label + 1)
+        key_list = [None] * (max_label + 1)
         for i in range(min_label, max_label + 1):
             label[i] = get_key(G[g_id - 1][1], i)
-            # print(get_key(G[g_id-1][1],i))
         # print(label)
-        # min_number = min(label)
-        # min_min_number = min(min_number)
-        #二维列表转化为一维列表
+        # print(get_key(G[g_id-1][1],i))
+        # print(label)
+
+        # 二维列表转化为一维列表
         min_min_number = min(list(_flatten(label)))
-        print(min_min_number)
+        # print(min_min_number)
         # print(min_min_number)
         # 计算不同标签节点的熵
         count_label = [0] * (max_label + 1)
@@ -158,8 +162,74 @@ def get_pro():
 
 test = get_pro()
 # print(test)
+# 测试概率输出
+# for g_id in graph_ids:
+#     print(test[g_id-1])
+#     if g_id > 2:
+#         break
 
+
+z = {}
 for g_id in graph_ids:
-    print(test[g_id-1])
-    if g_id > 2:
-        break
+    z = dict(itertools.chain(z.items(), G[g_id - 1][1].items()))
+sorted_y = sorted(z.items(), key=operator.itemgetter(0))
+z_label = dict(sorted_y)
+# print(z_label)
+# print(z)
+z_label_lsit = []
+for va in z_label.values():
+    z_label_lsit.append(va)
+print(len(z_label_lsit))
+a = {}
+for i in z_label_lsit:
+    a[i] = z_label_lsit.count(i)
+print(a)
+# 计算value相同的key集合
+
+max_label_2 = max(z.values())
+key_list = [None] * (max_label_2 + 1)
+# print(max_label_2)
+for number_t in range(max_label_2 + 1):
+    key_list[number_t] = []
+    for key, value in z.items():
+        if value == number_t:
+            key_list[number_t].append(key)
+    # print(len(z))
+    # print(len(key_list[number_t]))
+# print(key_list)
+# print(graph_ids)
+
+concate_list = [None] * (max_label_2 + 1)
+for i in range(max_label_2 + 1):
+    concate_list[i] = []
+    for g_id in graph_ids:
+        # print(len(test[g_id-1]))
+        # print(len(test[g_id-1]))
+        if len(test[g_id-1])-1 >=i:
+            concate_list[i].extend(test[g_id - 1][i])
+        # else:
+        #     continue
+    # print(len(concate_list[i]))
+
+# print(len(concate_list[2]))
+# print(len(key_list[2]))
+
+dict_k_c = [None] * (max_label_2 + 1)
+for i in range(max_label_2 + 1):
+    dict_k_c[i] = {}
+    dict_k_c[i] = dict(zip(key_list[i], concate_list[i]))
+    # print(len(dict_k_c[i]))
+
+fu = {}
+for i in range(max_label_2 + 1):
+    fu = dict(itertools.chain(fu.items(), dict_k_c[i].items()))
+# collections.OrderedDict(sorted(fu.items()))
+sorted_x = sorted(fu.items(), key=operator.itemgetter(0))
+# print(dict(sorted_x))
+dict_pro = dict(sorted_x)
+# print(len(dict_pro))
+file = open('dict_test_2.txt', 'w')
+for k, v in dict_pro.items():
+    file.write(str(z_label_lsit[k-1]) + ' ' + str(v) + '\n')
+
+file.close()
