@@ -6,6 +6,9 @@ import os
 import shutil
 import zipfile
 import ssl
+from util import *
+from itertools import islice
+
 try:
     # Python 2
     from urllib2 import HTTPError
@@ -30,163 +33,163 @@ global datasets_metadata, symmetric_dataset
 dataset_metadata = {
     "AIDS": {"nl": True, "el": True, "na": True, "ea": False,
              "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-             "morris/graphkerneldatasets/AIDS.zip"},
+                     "morris/graphkerneldatasets/AIDS.zip"},
     "BZR": {"nl": True, "el": False, "na": True, "ea": False,
             "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-            "morris/graphkerneldatasets/BZR.zip"},
+                    "morris/graphkerneldatasets/BZR.zip"},
     "BZR_MD": {"nl": True, "el": True, "na": False, "ea": True,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-               "morris/graphkerneldatasets/BZR_MD.zip"},
+                       "morris/graphkerneldatasets/BZR_MD.zip"},
     "COIL-DEL": {"nl": False, "el": True, "na": True, "ea": False,
                  "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-                 "graphkerneldatasets/COIL-DEL.zip"},
+                         "graphkerneldatasets/COIL-DEL.zip"},
     "COIL-RAG": {"nl": False, "el": False, "na": True, "ea": True,
                  "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-                 "graphkerneldatasets/COIL-RAG.zip"},
+                         "graphkerneldatasets/COIL-RAG.zip"},
     "COLLAB": {"nl": False, "el": False, "na": False, "ea": False,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-               "graphkerneldatasets/COLLAB.zip"},
+                       "graphkerneldatasets/COLLAB.zip"},
     "COX2": {"nl": True, "el": False, "na": True, "ea": False,
              "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-             "graphkerneldatasets/COX2.zip"},
+                     "graphkerneldatasets/COX2.zip"},
     "COX2_MD": {"nl": True, "el": True, "na": False, "ea": True,
                 "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-                "graphkerneldatasets/COX2_MD.zip"},
+                        "graphkerneldatasets/COX2_MD.zip"},
     "DHFR": {"nl": True, "el": False, "na": True, "ea": False,
              "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-             "graphkerneldatasets/DHFR.zip"},
+                     "graphkerneldatasets/DHFR.zip"},
     "DHFR_MD": {"nl": True, "el": True, "na": False, "ea": True,
                 "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-                "graphkerneldatasets/DHFR_MD.zip"},
+                        "graphkerneldatasets/DHFR_MD.zip"},
     "ER_MD": {"nl": True, "el": True, "na": False, "ea": True,
               "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-              "graphkerneldatasets/ER_MD.zip"},
+                      "graphkerneldatasets/ER_MD.zip"},
     "DD": {"nl": True, "el": False, "na": False, "ea": False,
            "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-           "graphkerneldatasets/DD.zip"},
+                   "graphkerneldatasets/DD.zip"},
     "ENZYMES": {"nl": True, "el": False, "na": True, "ea": False,
                 "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-                "graphkerneldatasets/ENZYMES.zip"},
+                        "graphkerneldatasets/ENZYMES.zip"},
     "Cuneiform": {"nl": True, "el": True, "na": True, "ea": True,
                   "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/"
                           "graphkerneldatasets/Cuneiform.zip"},
     "FINGERPRINT": {"nl": False, "el": False, "na": True, "ea": True,
                     "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                    "morris/graphkerneldatasets/Fingerprint.zip"},
+                            "morris/graphkerneldatasets/Fingerprint.zip"},
     "FIRSTMM_DB": {"nl": True, "el": False, "na": True, "ea": True,
                    "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                   "morris/graphkerneldatasets/FIRSTMM_DB.zip"},
+                           "morris/graphkerneldatasets/FIRSTMM_DB.zip"},
     "FRANKENSTEIN": {"nl": False, "el": False, "na": True, "ea": False,
                      "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                     "ris/graphkerneldatasets/FRANKENSTEIN.zip"},
+                             "ris/graphkerneldatasets/FRANKENSTEIN.zip"},
     "IMDB-BINARY": {"nl": False, "el": False, "na": False, "ea": False,
                     "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                    "ris/graphkerneldatasets/IMDB-BINARY.zip"},
+                            "ris/graphkerneldatasets/IMDB-BINARY.zip"},
     "IMDB-MULTI": {"nl": False, "el": False, "na": False, "ea": False,
                    "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                   "morris/graphkerneldatasets/IMDB-MULTI.zip"},
+                           "morris/graphkerneldatasets/IMDB-MULTI.zip"},
     "Letter-high": {"nl": False, "el": False, "na": True, "ea": False,
                     "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                    "ris/graphkerneldatasets/Letter-high.zip"},
+                            "ris/graphkerneldatasets/Letter-high.zip"},
     "Letter-low": {"nl": False, "el": False, "na": True, "ea": False,
                    "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                   "ris/graphkerneldatasets/Letter-low.zip"},
+                           "ris/graphkerneldatasets/Letter-low.zip"},
     "Letter-med": {"nl": False, "el": False, "na": True, "ea": False,
                    "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                   "ris/graphkerneldatasets/Letter-med.zip"},
+                           "ris/graphkerneldatasets/Letter-med.zip"},
     "Mutagenicity": {"nl": True, "el": True, "na": False, "ea": False,
                      "link": "https://ls11-www.cs.uni-dortmund.de/peo" +
-                     "ple/morris/graphkerneldatasets/Mutagenicity.zip"},
+                             "ple/morris/graphkerneldatasets/Mutagenicity.zip"},
     "MSRC_9": {"nl": True, "el": False, "na": False, "ea": False,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-               "graphkerneldatasets/MSRC_9.zip"},
+                       "graphkerneldatasets/MSRC_9.zip"},
     "MSRC_21": {"nl": True, "el": False, "na": False, "ea": False,
                 "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                "ris/graphkerneldatasets/MSRC_21.zip"},
+                        "ris/graphkerneldatasets/MSRC_21.zip"},
     "MSRC_21C": {"nl": True, "el": False, "na": False, "ea": False,
                  "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                 "ris/graphkerneldatasets/MSRC_21C.zip"},
+                         "ris/graphkerneldatasets/MSRC_21C.zip"},
     "MUTAG": {"nl": True, "el": True, "na": False, "ea": False,
               "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-              "ris/graphkerneldatasets/MUTAG.zip"},
+                      "ris/graphkerneldatasets/MUTAG.zip"},
     "NCI1": {"nl": True, "el": False, "na": False, "ea": False,
              "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-             "ris/graphkerneldatasets/NCI1.zip"},
+                     "ris/graphkerneldatasets/NCI1.zip"},
     "NCI109": {"nl": True, "el": False, "na": False, "ea": False,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-               "ris/graphkerneldatasets/NCI109.zip"},
+                       "ris/graphkerneldatasets/NCI109.zip"},
     "PTC_FM": {"nl": True, "el": True, "na": False, "ea": False,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-               "ris/graphkerneldatasets/PTC_FM.zip"},
+                       "ris/graphkerneldatasets/PTC_FM.zip"},
     "PTC_FR": {"nl": True, "el": True, "na": False, "ea": False,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-               "ris/graphkerneldatasets/PTC_FR.zip"},
+                       "ris/graphkerneldatasets/PTC_FR.zip"},
     "PTC_MM": {"nl": True, "el": True, "na": False, "ea": False,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-               "ris/graphkerneldatasets/PTC_MM.zip"},
+                       "ris/graphkerneldatasets/PTC_MM.zip"},
     "PTC_MR": {"nl": True, "el": True, "na": False, "ea": False,
                "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-               "ris/graphkerneldatasets/PTC_MR.zip"},
+                       "ris/graphkerneldatasets/PTC_MR.zip"},
     "PROTEINS": {"nl": True, "el": False, "na": True, "ea": False,
                  "link": "https://ls11-www.cs.uni-dortmund.de/people/mor" +
-                 "ris/graphkerneldatasets/PROTEINS.zip"},
+                         "ris/graphkerneldatasets/PROTEINS.zip"},
     "PROTEINS_full": {"nl": True, "el": False, "na": True, "ea": False,
                       "link": "https://ls11-www.cs.uni-dortmund.de/people" +
-                      "/morris/graphkerneldatasets/PROTEINS_full.zip"},
+                              "/morris/graphkerneldatasets/PROTEINS_full.zip"},
     "REDDIT-BINARY": {"nl": False, "el": False, "na": False, "ea": False,
                       "link": "https://ls11-www.cs.uni-dortmund.de/people" +
-                      "/morris/graphkerneldatasets/REDDIT-BINARY.zip"},
+                              "/morris/graphkerneldatasets/REDDIT-BINARY.zip"},
     "REDDIT-MULTI-5K": {"nl": False, "el": False, "na": False, "ea": False,
                         "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                        "morris/graphkerneldatasets/REDDIT-MULTI-5K.zip"},
+                                "morris/graphkerneldatasets/REDDIT-MULTI-5K.zip"},
     "REDDIT-MULTI-12K": {"nl": False, "el": False, "na": False, "ea": False,
                          "link": "https://ls11-www.cs.uni-dortmund.de/peop" +
-                         "le/morris/graphkerneldatasets/REDDIT-MULTI-12K.zip"},
+                                 "le/morris/graphkerneldatasets/REDDIT-MULTI-12K.zip"},
     "SYNTHETIC": {"nl": False, "el": False, "na": True, "ea": False,
                   "link": "https://ls11-www.cs.uni-dortmund.de/people" +
-                  "/morris/graphkerneldatasets/SYNTHETIC.zip"},
+                          "/morris/graphkerneldatasets/SYNTHETIC.zip"},
     "SYNTHETICnew": {"nl": False, "el": False, "na": True, "ea": False,
                      "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                     "morris/graphkerneldatasets/SYNTHETICnew.zip"},
+                             "morris/graphkerneldatasets/SYNTHETICnew.zip"},
     "Synthie": {"nl": False, "el": False, "na": True, "ea": False,
                 "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                "morris/graphkerneldatasets/Synthie.zip"},
+                        "morris/graphkerneldatasets/Synthie.zip"},
     "Tox21_AHR": {"nl": True, "el": True, "na": False, "ea": False,
                   "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                  "morris/graphkerneldatasets/Tox21_AHR.zip"},
+                          "morris/graphkerneldatasets/Tox21_AHR.zip"},
     "Tox21_AR": {"nl": True, "el": True, "na": False, "ea": False,
                  "link": "https://ls11-www.cs.uni-dortmund.de/people/morris/" +
-                 "graphkerneldatasets/COX2_MD.zip"},
+                         "graphkerneldatasets/COX2_MD.zip"},
     "Tox21_AR-LBD": {"nl": True, "el": True, "na": False, "ea": False,
                      "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                     "morris/graphkerneldatasets/Tox21_AR-LBD.zip"},
+                             "morris/graphkerneldatasets/Tox21_AR-LBD.zip"},
     "Tox21_ARE": {"nl": True, "el": True, "na": False, "ea": False,
                   "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                  "morris/graphkerneldatasets/Tox21_ARE.zip"},
+                          "morris/graphkerneldatasets/Tox21_ARE.zip"},
     "Tox21_aromatase": {"nl": True, "el": True, "na": False, "ea": False,
                         "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                        "morris/graphkerneldatasets/Tox21_aromatase.zip"},
+                                "morris/graphkerneldatasets/Tox21_aromatase.zip"},
     "Tox21_ATAD5": {"nl": True, "el": True, "na": False, "ea": False,
                     "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                    "morris/graphkerneldatasets/Tox21_ATAD5.zip"},
+                            "morris/graphkerneldatasets/Tox21_ATAD5.zip"},
     "Tox21_ER": {"nl": True, "el": True, "na": False, "ea": False,
                  "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                 "morris/graphkerneldatasets/Tox21_ER.zip"},
+                         "morris/graphkerneldatasets/Tox21_ER.zip"},
     "Tox21_ER_LBD": {"nl": True, "el": True, "na": False, "ea": False,
                      "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                     "morris/graphkerneldatasets/Tox21_ER_LBD.zipp"},
+                             "morris/graphkerneldatasets/Tox21_ER_LBD.zipp"},
     "Tox21_HSE": {"nl": True, "el": True, "na": False, "ea": False,
                   "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                  "morris/graphkerneldatasets/Tox21_HSE.zip"},
+                          "morris/graphkerneldatasets/Tox21_HSE.zip"},
     "Tox21_MMP": {"nl": True, "el": True, "na": False, "ea": False,
                   "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                  "morris/graphkerneldatasets/Tox21_MMP.zip"},
+                          "morris/graphkerneldatasets/Tox21_MMP.zip"},
     "Tox21_p53": {"nl": True, "el": True, "na": False, "ea": False,
                   "link": "https://ls11-www.cs.uni-dortmund.de/people/" +
-                  "morris/graphkerneldatasets/Tox21_p53.zip"},
+                          "morris/graphkerneldatasets/Tox21_p53.zip"},
     "Tox21_PPAR-gamma": {"nl": True, "el": True, "na": False, "ea": False,
                          "link": "https://ls11-www.cs.uni-dortmund.de/peop" +
-                         "le/morris/graphkerneldatasets/Tox21_PPAR-gamma.zip"}
+                                 "le/morris/graphkerneldatasets/Tox21_PPAR-gamma.zip"}
 }
 
 symmetric_dataset = False
@@ -240,11 +243,11 @@ def read_data(
         of the `Gs` iterable. Useful for classification.
 
     """
-    indicator_path = "./"+str(name)+"/"+str(name)+"_graph_indicator.txt"
+    indicator_path = "./" + str(name) + "/" + str(name) + "_graph_indicator.txt"
     edges_path = "./" + str(name) + "/" + str(name) + "_A.txt"
-    # node_labels_path = "./" + str(name) + "/" + str(name) + "_node_labels.txt"
     node_labels_path = "./" + str(name) + "/" + str(name) + "_node_labels.txt"
-    node_attributes_path = "./"+str(name)+"/"+str(name)+"_node_attributes.txt"
+    # node_labels_path = "./" + str(name) + "/" + str(name) + "_label_pro.txt"
+    node_attributes_path = "./" + str(name) + "/" + str(name) + "_node_attributes.txt"
     edge_labels_path = "./" + str(name) + "/" + str(name) + "_edge_labels.txt"
     edge_attributes_path = \
         "./" + str(name) + "/" + str(name) + "_edge_attributes.txt"
@@ -259,6 +262,7 @@ def read_data(
     Graphs = dict()
     # dictionary of labels for nodes
     node_labels = dict()
+
     # dictionary of labels for edges
     edge_labels = dict()
 
@@ -284,10 +288,10 @@ def read_data(
 
     # Extract node attributes
     if (prefer_attr_nodes and
-        dataset_metadata[name].get(
+            dataset_metadata[name].get(
                 "na",
                 os.path.exists(node_attributes_path)
-                )):
+            )):
         with open(node_attributes_path, "r") as f:
             for (i, line) in enumerate(f, 1):
                 node_labels[ngc[i]][i] = \
@@ -297,19 +301,21 @@ def read_data(
     elif dataset_metadata[name].get(
             "nl",
             os.path.exists(node_labels_path)
-            ):
+    ):
         with open(node_labels_path, "r") as f:
+            # m = []
             for (i, line) in enumerate(f, 1):
-                node_labels[ngc[i]][i] = int(line[:-1])
+                node_labels[ngc[i]][i] = int(line.split(' ')[0][:-1])
+                # node_labels_pro[ngc[i]][i] = float(line.split(' ')[1][:-1])
     elif produce_labels_nodes:
-        for i in range(1, len(Graphs)+1):
+        for i in range(1, len(Graphs) + 1):
             node_labels[i] = dict(Counter(s for (s, d) in Graphs[i] if s != d))
 
     # Extract edge attributes
     if (prefer_attr_edges and
-        dataset_metadata[name].get(
-            "ea",
-            os.path.exists(edge_attributes_path)
+            dataset_metadata[name].get(
+                "ea",
+                os.path.exists(edge_attributes_path)
             )):
         with open(edge_attributes_path, "r") as f:
             for (i, line) in enumerate(f, 1):
@@ -323,7 +329,7 @@ def read_data(
     elif dataset_metadata[name].get(
             "el",
             os.path.exists(edge_labels_path)
-            ):
+    ):
         with open(edge_labels_path, "r") as f:
             for (i, line) in enumerate(f, 1):
                 edge_labels[ngc[elc[i][0]]][elc[i]] = int(line[:-1])
@@ -331,14 +337,46 @@ def read_data(
                     edge_labels[ngc[elc[i][1]]][(elc[i][1], elc[i][0])] = \
                         int(line[:-1])
 
+    path = str(name)
+    node_label_list = []
+    node_label_pro_list = []
+    file = open('D:/Projects/PyProjects/Motif_Entropy/data/' + path + "/" + path + '_label_pro.txt', 'r')
+    for line in file.readlines():
+        line = line.strip()
+        k = int(line.split(' ')[0])
+        v = float(line.split(' ')[1])
+        # print(k,"  ",v)
+        node_label_list.append(k)
+        node_label_pro_list.append(v)
+    # print(len(node_label_list)," ",len(node_label_pro_list))
+    f.close()
+    # print(node_labels)
+
+    count_len = []
+    for i in range(1, len(Graphs) + 1):
+        count_len.append(len(node_labels[i]))
+    # print(len(count_len)," ",count_len)
+    merge = [i for i in range(1, len(node_label_list) + 1)]
+    node_label_pro_dict = dict(zip(merge, node_label_pro_list))
+
+    # 拆分字典,每张图对应节点的概率
+    label_pro_list = []
+    it = iter(node_label_pro_dict)
+    for i in range(0, len(Graphs)):
+        label_pro_list.append({k: node_label_pro_dict[k] for k in islice(it, count_len[i])})
+
+    # print(new[187])
     Gs = list()
     if as_graphs:
-        for i in range(1, len(Graphs)+1):
-            Gs.append(Graph(Graphs[i], node_labels[i], edge_labels[i]))
-    else:
-        for i in range(1, len(Graphs)+1):
-            Gs.append([Graphs[i], node_labels[i], edge_labels[i]])
+        for i in range(1, len(Graphs) + 1):
+            # print(Graphs[i]," ",node_labels[i]," ",edge_labels[i])
+            Gs.append(Graph(Graphs[i], node_labels[i], edge_labels[i], label_pro_list[i-1]))
 
+    else:
+        # print(Graphs[1], " ", node_labels[1], " ", edge_labels[1]," ", label_pro_list[0])
+        for i in range(1, len(Graphs) + 1):
+            Gs.append([Graphs[i], node_labels[i], edge_labels[i], label_pro_list[i-1]])
+            # print(node_labels[i])
     # print(Gs[0][1])
     if with_classes:
         classes = []
@@ -501,7 +539,7 @@ def fetch_dataset(
 
         return data
     else:
-        raise ValueError('Dataset: "'+str(name)+'" is currently unsupported.' +
+        raise ValueError('Dataset: "' + str(name) + '" is currently unsupported.' +
                          '\nSupported datasets come from '
                          'https://ls11-www.cs.tu-dortmund.de/staff/morris/' +
                          'graphkerneldatasets. If your dataset name appears' +

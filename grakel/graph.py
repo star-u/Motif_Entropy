@@ -150,7 +150,7 @@ class Graph(object):
     def __init__(
             self,
             initialization_object=None,
-            node_labels=None, edge_labels=None,
+            node_labels=None, edge_labels=None, node_labels_pro=None,
             graph_format="auto", construct_labels=False):
         """__init__ function of the graph object."""
         self.construct_label = construct_labels
@@ -159,7 +159,7 @@ class Graph(object):
             if (initialization_object is not None):
                 self.build_graph(initialization_object,
                                  node_labels,
-                                 edge_labels)
+                                 edge_labels,node_labels_pro)
             elif graph_format == "auto":
                 raise ValueError('no initialization object ' +
                                  '- format must not be auto')
@@ -167,7 +167,7 @@ class Graph(object):
             raise ValueError('Invalid graph format.\nValid graph formats' +
                              ' are "all", "dictionary", "adjacency", "auto"')
 
-    def build_graph(self, g, node_labels=None, edge_labels=None):
+    def build_graph(self, g, node_labels=None, edge_labels=None,node_labels_pro=None):
         """Build a graph structure, given a supported graph representation.
 
         Parameters
@@ -199,6 +199,8 @@ class Graph(object):
                 # Assign labels for edges
                 self.index_edge_labels = edge_labels
 
+                self.node_labels_pro = node_labels_pro
+
                 if(self._format == "auto"):
                     self._format = "adjacency"
             elif is_edge_dictionary(g):
@@ -210,6 +212,8 @@ class Graph(object):
 
                 # Assign labels for edges
                 self.edge_labels = edge_labels
+
+                self.node_labels_pro = node_labels_pro
 
                 if(self._format == "auto"):
                     self._format = "dictionary"
@@ -271,11 +275,13 @@ class Graph(object):
                         self.edsamic = None
                         self.index_node_labels = None
                         self.index_edge_labels = None
+                        self.node_labels_pro = None
                     else:
                         self.vertices = None
                         self.node_labels = None
                         self.edge_labels = None
                         self.edge_dictionary = None
+                        self.node_labels_pro = None
 
     def desired_format(self, graph_format, warn=False):
         """Change the graph format, to include the desired.

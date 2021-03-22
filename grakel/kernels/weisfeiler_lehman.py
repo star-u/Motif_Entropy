@@ -341,14 +341,14 @@ class WeisfeilerLehman(Kernel):
                     is_iter = isinstance(x, collections.Iterable)
                     if is_iter:
                         x = list(x)
-                    if is_iter and len(x) in [0, 2, 3]:
+                    if is_iter and len(x) in [0, 2, 3,4]:
                         if len(x) == 0:
                             warnings.warn('Ignoring empty element on index: '
                                           + str(i))
                             continue
 
-                        elif len(x) in [2, 3]:
-                            x = Graph(x[0], x[1], {}, self._graph_format)
+                        elif len(x) in [2, 3, 4]:
+                            x = Graph(x[0], x[1], {}, {},self._graph_format)
                     elif type(x) is Graph:
                         x.desired_format("dictionary")
                     else:

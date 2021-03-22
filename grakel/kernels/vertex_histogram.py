@@ -90,7 +90,7 @@ class VertexHistogram(Kernel):
                 is_iter = isinstance(x, Iterable)
                 if is_iter:
                     x = list(x)
-                if is_iter and len(x) in [0, 2, 3]:
+                if is_iter and len(x) in [0, 2, 3, 4]:
                     if len(x) == 0:
                         warn('Ignoring empty element on index: '+str(i))
                         continue

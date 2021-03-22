@@ -21,31 +21,19 @@ from grakel.datasets import fetch_dataset, get_dataset_info
 from grakel.kernels import WeisfeilerLehman, VertexHistogram
 from sklearn.model_selection import ShuffleSplit
 from util import *
+
 # Loads the MUTAG dataset
-test_dataset = {"1": "MUTAG"}
+test_dataset = {"1": "MUTAG", "2": "PROTEINS_full", "3": "PTC_FM", "4": "PTC_FR", "5": "PTC_MM", "6": "PTC_MR",
+                "7": "NCI109", "8": "NCI1"}
 
 for key, value in test_dataset.items():
     dataset = fetch_dataset(value, verbose=False)
     G, y = dataset.data, dataset.target
     # print(len(G))
-    print(G[0][1])
-
-    # 合并字典
-    # store = dict(G[0][1])
-    # for i in range(0, len(G)):
-    #     if i + 1 < len(G):
-    #         store = store.copy()
-    #         store.update(G[i + 1][1])
-    # # print(store)
-    # max_label = max(store.values())
-    # print(G)
-    # for number in range(1,len(G)+1):
-    # print(G[1][0])
-    #转化为邻接矩阵
-
+    # print(G[0][1])
     # Splits the dataset into a training and a test set
     G_train, G_test, y_train, y_test = train_test_split(G, y, test_size=0.1, random_state=42)
-    # print(get_dataset_info(value))
+    # print((np.array(G_train)).shape)
     # Uses the Weisfeiler-Lehman subtree kernel to generate the kernel matrices
     gk = WeisfeilerLehman(n_iter=3, base_graph_kernel=VertexHistogram, normalize=True)
     K_train = gk.fit_transform(G_train)

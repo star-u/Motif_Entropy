@@ -21,7 +21,7 @@ import operator
 import collections
 
 # Loads the MUTAG dataset
-test_dataset = {"1": "MUTAG"}
+test_dataset = {"1": "NCI1"}
 
 for key, value in test_dataset.items():
     dataset = fetch_dataset(value, verbose=False)
@@ -161,13 +161,6 @@ def get_pro():
 
 
 test = get_pro()
-# print(test)
-# 测试概率输出
-# for g_id in graph_ids:
-#     print(test[g_id-1])
-#     if g_id > 2:
-#         break
-
 
 z = {}
 for g_id in graph_ids:
@@ -179,11 +172,11 @@ z_label = dict(sorted_y)
 z_label_lsit = []
 for va in z_label.values():
     z_label_lsit.append(va)
-print(len(z_label_lsit))
+# print(z_label_lsit)
 a = {}
 for i in z_label_lsit:
     a[i] = z_label_lsit.count(i)
-print(a)
+# print(a)
 # 计算value相同的key集合
 
 max_label_2 = max(z.values())
@@ -199,13 +192,19 @@ for number_t in range(max_label_2 + 1):
 # print(key_list)
 # print(graph_ids)
 
+# for g_id in graph_ids:
+#     print(test[g_id - 1])
+#     if g_id >2:
+#         break
+
+
 concate_list = [None] * (max_label_2 + 1)
 for i in range(max_label_2 + 1):
     concate_list[i] = []
     for g_id in graph_ids:
         # print(len(test[g_id-1]))
         # print(len(test[g_id-1]))
-        if len(test[g_id-1])-1 >=i:
+        if len(test[g_id - 1]) - 1 >= i and test[g_id - 1][i] is not None:
             concate_list[i].extend(test[g_id - 1][i])
         # else:
         #     continue
@@ -228,8 +227,9 @@ sorted_x = sorted(fu.items(), key=operator.itemgetter(0))
 # print(dict(sorted_x))
 dict_pro = dict(sorted_x)
 # print(len(dict_pro))
-file = open('dict_test_2.txt', 'w')
+# 把标签和对应的概率写入文件
+file = open('data/NCI1/NCI1_label_pro.txt', 'w')
 for k, v in dict_pro.items():
-    file.write(str(z_label_lsit[k-1]) + ' ' + str(v) + '\n')
+    file.write(str(z_label_lsit[k - 1]) + ' ' + str(v) + '\n')
 
 file.close()
