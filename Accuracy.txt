@@ -1,5 +1,4 @@
 -----2----------------
------2----------------
 1: MUTAGs Accuracy: 89.47%
 2: PROTEINS_fulls Accuracy: 75.89%
 3: PTC_FMs Accuracy: 74.29%

@@ -295,12 +295,13 @@ class WeisfeilerLehman(Kernel):
             raise ValueError('transform input cannot be None')
         else:
             km, self.X = self.parse_input(X)
-
+        # print(km.shape)
         self._X_diag = np.diagonal(km)
         if self.normalize:
             old_settings = np.seterr(divide='ignore')
             km = np.nan_to_num(np.divide(km, np.sqrt(np.outer(self._X_diag, self._X_diag))))
             np.seterr(**old_settings)
+        # print(km)
         return km
 
     def transform(self, X):
@@ -418,6 +419,7 @@ class WeisfeilerLehman(Kernel):
                     L[j] = new_labels
                     # Create the new graphs with the new labels.
                     new_graphs.append([Gs_ed[j], new_labels])
+                # print(new_graphs)
                 yield new_graphs
 
         if self._parallel is None:

@@ -25,18 +25,20 @@ from util import *
 # Loads the MUTAG dataset
 test_dataset = {"1": "MUTAG", "2": "PROTEINS_full", "3": "PTC_FM", "4": "PTC_FR", "5": "PTC_MM", "6": "PTC_MR",
                 "7": "NCI109", "8": "NCI1"}
-
-f = open('Accuracy.txt', 'a')
-for iter_number in [2, 10, 20, 30, 40, 50]:
-    f.write("-----"+str(iter_number)+"----------------\n")
+Random_state = [35, 46, 35, 35, 38, 44, 88, 38]
+f = open('Accuracy_2.txt', 'a')
+for iter_number in [2]:
+    f.write("-----" + str(iter_number) + "----------------\n")
     for key, value in test_dataset.items():
         dataset = fetch_dataset(value, verbose=False)
         G, y = dataset.data, dataset.target
         # print(len(G))
         # print(G[0][1])
         # Splits the dataset into a training and a test set
-        G_train, G_test, y_train, y_test = train_test_split(G, y, test_size=0.1, random_state=42)
+        G_train, G_test, y_train, y_test = train_test_split(G, y, test_size=0.1,
+                                                            random_state=Random_state[int(key) - 1])
         # print((np.array(G_train)).shape)
+        # print(G[0][3])
         # Uses the Weisfeiler-Lehman subtree kernel to generate the kernel matrices 2,10,20
         gk = WeisfeilerLehman(n_iter=iter_number, base_graph_kernel=VertexHistogram, normalize=True)
         K_train = gk.fit_transform(G_train)
@@ -50,5 +52,5 @@ for iter_number in [2, 10, 20, 30, 40, 50]:
         # Computes and prints the classification accuracy
         acc = accuracy_score(y_test, y_pred)
 
-        f.write(str(key)+": "+str(value)+"s Accuracy: "+str(round(acc * 100, 2)) + "%\n")
+        f.write(str(key) + ": " + str(value) + "s Accuracy: " + str(round(acc * 100, 2)) + "%\n")
 f.close()

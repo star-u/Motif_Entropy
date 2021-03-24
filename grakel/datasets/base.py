@@ -364,18 +364,26 @@ def read_data(
     it = iter(node_label_pro_dict)
     for i in range(0, len(Graphs)):
         label_pro_list.append({k: node_label_pro_dict[k] for k in islice(it, count_len[i])})
-
+    # print(label_pro_list)
+    count = 0
+    for i in range(1, len(Graphs) + 1):
+        for j in range(count + 1, count + count_len[i - 1] + 1):
+            # print(node_labels[i][j])
+            # print(j)
+            # print(count_len[i - 1])
+            node_labels[i][j] = node_labels[i][j] * label_pro_list[i - 1][j]
+        count += count_len[i - 1]
     # print(new[187])
     Gs = list()
     if as_graphs:
         for i in range(1, len(Graphs) + 1):
             # print(Graphs[i]," ",node_labels[i]," ",edge_labels[i])
-            Gs.append(Graph(Graphs[i], node_labels[i], edge_labels[i], label_pro_list[i-1]))
+            Gs.append(Graph(Graphs[i], node_labels[i], edge_labels[i], label_pro_list[i - 1]))
 
     else:
         # print(Graphs[1], " ", node_labels[1], " ", edge_labels[1]," ", label_pro_list[0])
         for i in range(1, len(Graphs) + 1):
-            Gs.append([Graphs[i], node_labels[i], edge_labels[i], label_pro_list[i-1]])
+            Gs.append([Graphs[i], node_labels[i], edge_labels[i], label_pro_list[i - 1]])
             # print(node_labels[i])
     # print(Gs[0][1])
     if with_classes:
