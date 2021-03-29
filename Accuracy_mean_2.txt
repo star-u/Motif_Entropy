@@ -1,0 +1,44 @@
+-----12----------------
+-----12----------------
+1: MUTAG's Accuracy: 79.82%
+2: PROTEINS_full's Accuracy: 71.67%
+3: PTC_FM's Accuracy: 60.71%
+4: PTC_FR's Accuracy: 65.57%
+5: PTC_MM's Accuracy: 64.11%
+6: PTC_MR's Accuracy: 58.89%
+-----8----------------
+1: MUTAG's Accuracy: 82.46%
+2: PROTEINS_full's Accuracy: 71.82%
+3: PTC_FM's Accuracy: 60.71%
+4: PTC_FR's Accuracy: 65.57%
+5: PTC_MM's Accuracy: 64.11%
+6: PTC_MR's Accuracy: 58.89%
+-----5----------------
+1: MUTAG's Accuracy: 83.33%
+2: PROTEINS_full's Accuracy: 72.31%
+3: PTC_FM's Accuracy: 60.71%
+4: PTC_FR's Accuracy: 65.57%
+5: PTC_MM's Accuracy: 64.11%
+6: PTC_MR's Accuracy: 58.65%
+-----2----------------
+1: MUTAG's Accuracy: 82.68%
+2: PROTEINS_full's Accuracy: 72.12%
+3: PTC_FM's Accuracy: 61.07%
+4: PTC_FR's Accuracy: 65.68%
+5: PTC_MM's Accuracy: 63.74%
+6: PTC_MR's Accuracy: 59.38%
+-----2----------------
+1: MUTAG's Accuracy: 89.47%
+2: PROTEINS_full's Accuracy: 73.77%
+3: PTC_FM's Accuracy: 58.21%
+4: PTC_FR's Accuracy: 64.58%
+5: PTC_MM's Accuracy: 62.87%
+6: PTC_MR's Accuracy: 58.57%
+
+-----2----------------
+1: MUTAG's Accuracy: 88.42%
+2: PROTEINS_full's Accuracy: 73.3%
+3: PTC_FM's Accuracy: 56.86%
+4: PTC_FR's Accuracy: 63.61%
+5: PTC_MM's Accuracy: 62.94%
+6: PTC_MR's Accuracy: 56.0%

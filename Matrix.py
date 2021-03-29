@@ -1,3 +1,5 @@
+from math import sqrt
+
 import numpy as np
 import fractions as fc
 from numpy.linalg import *
@@ -21,10 +23,16 @@ C1 = np.linalg.inv(C)
 AAA = np.array([[1, 1, 2, 2, 3], [2, 2, 3, 1, 4], [1, 0, 1, 1, 5], [2, 3, 5, 5, 4]])
 PPP = np.array([[-2, 1, 1, 0], [-1, 1, -1, 0], [2, -1, 0, 0], [-3, 0, 1, 1]])
 PPPP = np.array([[1,1,0,-1],[-4,1,0,1],[2,-1,0,0],[-3,0,1,1]])
-print(np.dot(PPP, AAA))
-print(np.dot(PPPP, AAA))
+# print(np.dot(PPP, AAA))
+# print(np.dot(PPPP, AAA))
 
 AA = np.array([[1, 0, 0, 1, 1], [0, 1, 0, 2, 2], [0, 0, 1, fc.Fraction(1,2), 0]])
 PP = np.array([[1, -1, 2], [1, 1, -2], [3, -1, 8], [1, 3, -6]])
 # print(np.dot(PP, AA))
 
+print(pow(sqrt(2)-1,6))
+print(1/(pow(2.4,6)))
+print(1/(pow(5.8,3)))
+print(4/sqrt(5))
+print(2/(sqrt(fc.Fraction(4,5))))
+print(sqrt(5))

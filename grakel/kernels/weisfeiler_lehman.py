@@ -18,7 +18,9 @@ from grakel.kernels.vertex_histogram import VertexHistogram
 from six import iteritems
 from six import itervalues
 
-
+test_dataset = {"1": "MUTAG", "2": "PROTEINS_full", "3": "PTC_FM", "4": "PTC_FR", "5": "PTC_MM", "6": "PTC_MR"}
+                # "7": "NCI109", "8": "NCI1"}
+count_dataset = 1
 class WeisfeilerLehman(Kernel):
     """Compute the Weisfeiler Lehman Kernel.
 
@@ -157,7 +159,7 @@ class WeisfeilerLehman(Kernel):
                                 extra = tuple(x[3:])
                             x = Graph(x[0], x[1], x[2], graph_format=self._graph_format)
                             extra = (x.get_labels(purpose=self._graph_format,
-                                                  label_type="edge", return_none=True), ) + extra
+                                                  label_type="edge", return_none=True),) + extra
                         else:
                             x = Graph(x[0], x[1], {}, graph_format=self._graph_format)
                             extra = tuple()
@@ -168,7 +170,7 @@ class WeisfeilerLehman(Kernel):
                     if el is None:
                         extra = tuple()
                     else:
-                        extra = (el, )
+                        extra = (el,)
 
                 else:
                     raise TypeError('each element of X must be either a ' +
@@ -178,7 +180,7 @@ class WeisfeilerLehman(Kernel):
                 Gs_ed[nx] = x.get_edge_dictionary()
                 L[nx] = x.get_labels(purpose="dictionary")
                 extras[nx] = extra
-                distinct_values |= set(itervalues(L[nx]))
+                distinct_values |= set(itervalues(L[nx]))#位运算
                 nx += 1
             if nx == 0:
                 raise ValueError('parsed input is empty')
@@ -198,6 +200,7 @@ class WeisfeilerLehman(Kernel):
         # Initalize an inverse dictionary of labels for all iterations
         self._inv_labels = dict()
         self._inv_labels[0] = WL_labels_inverse
+
         # print(WL_labels_inverse)
         # print(label_count)
         def generate_graphs(label_count, WL_labels_inverse):
@@ -210,7 +213,7 @@ class WeisfeilerLehman(Kernel):
                 # add new labels
                 new_graphs.append((Gs_ed[j], new_labels) + extras[j])
             yield new_graphs
-
+            # count_dataset = 1
             for i in range(1, self._n_iter):
                 label_set, WL_labels_inverse, L_temp = set(), dict(), dict()
                 for j in range(nx):
@@ -220,7 +223,7 @@ class WeisfeilerLehman(Kernel):
                     L_temp[j] = dict()
                     for v in Gs_ed[j].keys():
                         credential = str(L[j][v]) + "," + \
-                            str(sorted([L[j][n] for n in Gs_ed[j][v].keys()]))
+                                     str(sorted([L[j][n] for n in Gs_ed[j][v].keys()]))
                         L_temp[j][v] = credential
                         label_set.add(credential)
 
@@ -228,9 +231,13 @@ class WeisfeilerLehman(Kernel):
                 for dv in label_list:
                     WL_labels_inverse[dv] = label_count
                     label_count += 1
-
+                # test_dataset[str[i]]
+                global  count_dataset
+                # print(test_dataset[str(count_dataset)]+"数据集 : 第"+str(i)+"轮迭代"+str(label_count))
                 # Recalculate labels
                 new_graphs = list()
+                if i ==self._n_iter-1:
+                    count_dataset += 1
                 for j in range(nx):
                     new_labels = dict()
                     for k in L_temp[j].keys():
@@ -249,7 +256,7 @@ class WeisfeilerLehman(Kernel):
                     base_graph_kernel[i].fit(g)
             elif self._method_calling == 2:
                 K = np.sum((base_graph_kernel[i].fit_transform(g) for (i, g) in
-                           enumerate(generate_graphs(label_count, WL_labels_inverse))), axis=0)
+                            enumerate(generate_graphs(label_count, WL_labels_inverse))), axis=0)
 
         else:
             if self._method_calling == 1:
@@ -257,7 +264,7 @@ class WeisfeilerLehman(Kernel):
                                for (i, g) in enumerate(generate_graphs(label_count, WL_labels_inverse)))
             elif self._method_calling == 2:
                 K = np.sum(self._parallel(joblib.delayed(efit_transform)(base_graph_kernel[i], g)
-                           for (i, g) in enumerate(generate_graphs(label_count, WL_labels_inverse))),
+                                          for (i, g) in enumerate(generate_graphs(label_count, WL_labels_inverse))),
                            axis=0)
 
         if self._method_calling == 1:
@@ -342,14 +349,14 @@ class WeisfeilerLehman(Kernel):
                     is_iter = isinstance(x, collections.Iterable)
                     if is_iter:
                         x = list(x)
-                    if is_iter and len(x) in [0, 2, 3,4]:
+                    if is_iter and len(x) in [0, 2, 3, 4]:
                         if len(x) == 0:
                             warnings.warn('Ignoring empty element on index: '
                                           + str(i))
                             continue
 
                         elif len(x) in [2, 3, 4]:
-                            x = Graph(x[0], x[1], {}, {},self._graph_format)
+                            x = Graph(x[0], x[1], {}, {}, self._graph_format)
                     elif type(x) is Graph:
                         x.desired_format("dictionary")
                     else:
@@ -386,6 +393,7 @@ class WeisfeilerLehman(Kernel):
             yield new_graphs
 
             for i in range(1, self._n_iter):
+
                 new_graphs = list()
                 L_temp, label_set = dict(), set()
                 nl += len(self._inv_labels[i])
@@ -395,7 +403,7 @@ class WeisfeilerLehman(Kernel):
                     L_temp[j] = dict()
                     for v in Gs_ed[j].keys():
                         credential = str(L[j][v]) + "," + \
-                            str(sorted([L[j][n] for n in Gs_ed[j][v].keys()]))
+                                     str(sorted([L[j][n] for n in Gs_ed[j][v].keys()]))
                         L_temp[j][v] = credential
                         if credential not in self._inv_labels[i]:
                             label_set.add(credential)
@@ -421,16 +429,16 @@ class WeisfeilerLehman(Kernel):
                     new_graphs.append([Gs_ed[j], new_labels])
                 # print(new_graphs)
                 yield new_graphs
-
+                # print(L)
         if self._parallel is None:
             # Calculate the kernel matrix without parallelization
             K = np.sum((self.X[i].transform(g) for (i, g)
-                       in enumerate(generate_graphs(WL_labels_inverse, nl))), axis=0)
+                        in enumerate(generate_graphs(WL_labels_inverse, nl))), axis=0)
 
         else:
             # Calculate the kernel marix with parallelization
             K = np.sum(self._parallel(joblib.delayed(etransform)(self.X[i], g) for (i, g)
-                       in enumerate(generate_graphs(WL_labels_inverse, nl))), axis=0)
+                                      in enumerate(generate_graphs(WL_labels_inverse, nl))), axis=0)
 
         self._is_transformed = True
         if self.normalize:
@@ -444,7 +452,7 @@ class WeisfeilerLehman(Kernel):
     def diagonal(self):
         """Calculate the kernel matrix diagonal for fitted data.
 
-        A funtion called on transform on a seperate dataset to apply
+        A function called on transform on a seperate dataset to apply
         normalization on the exterior.
 
         Parameters
