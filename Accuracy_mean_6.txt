@@ -1,0 +1,49 @@
+origin 10-fold cross-validation
+1: MUTAG's Accuracy: 87.37%
+2: PROTEINS_full's Accuracy: 75.8%
+3: PTC_FM's Accuracy: 64.57%
+4: PTC_FR's Accuracy: 66.67%
+5: PTC_MM's Accuracy: 68.53%
+6: PTC_MR's Accuracy: 62.57%
+origin 10-fold cross-validation
+1: MUTAG's Accuracy: 83.68%
+2: PROTEINS_full's Accuracy: 74.38%
+3: PTC_FM's Accuracy: 58.86%
+4: PTC_FR's Accuracy: 66.11%
+5: PTC_MM's Accuracy: 68.53%
+6: PTC_MR's Accuracy: 65.71%
+origin 10-fold cross-validation
+1: MUTAG's Accuracy: 83.68%
+2: PROTEINS_full's Accuracy: 74.38%
+3: PTC_FM's Accuracy: 58.86%
+4: PTC_FR's Accuracy: 66.11%
+5: PTC_MM's Accuracy: 68.53%
+6: PTC_MR's Accuracy: 68.29%
+origin 10-fold cross-validation
+1: MUTAG's Accuracy: 83.68%
+2: PROTEINS_full's Accuracy: 74.38%
+3: PTC_FM's Accuracy: 58.86%
+4: PTC_FR's Accuracy: 66.11%
+5: PTC_MM's Accuracy: 71.47%
+6: PTC_MR's Accuracy: 62.57%
+origin 10-fold cross-validation
+1: MUTAG's Accuracy: 87.37%
+2: PROTEINS_full's Accuracy: 74.38%
+3: PTC_FM's Accuracy: 58.86%
+4: PTC_FR's Accuracy: 66.11%
+5: PTC_MM's Accuracy: 68.53%
+6: PTC_MR's Accuracy: 62.57%
+origin 10-fold cross-validation
+1: MUTAG's Accuracy: 87.37%
+2: PROTEINS_full's Accuracy: 74.38%
+3: PTC_FM's Accuracy: 58.86%
+4: PTC_FR's Accuracy: 66.11%
+5: PTC_MM's Accuracy: 69.71%
+6: PTC_MR's Accuracy: 62.57%
+origin 10-fold cross-validation
+1: MUTAG's Accuracy: 87.37%
+2: PROTEINS_full's Accuracy: 74.38%
+3: PTC_FM's Accuracy: 58.86%
+4: PTC_FR's Accuracy: 66.11%
+5: PTC_MM's Accuracy: 67.35%
+6: PTC_MR's Accuracy: 62.57%

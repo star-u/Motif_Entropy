@@ -28,7 +28,7 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 test_dataset = {"1": "MUTAG", "2": "PROTEINS_full", "3": "PTC_FM", "4": "PTC_FR", "5": "PTC_MM", "6": "PTC_MR"}
 # ,"7": "NCI109", "8": "NCI1"}
 #10zhe random state 参数
-random_state_list = [2, 30, 30, 30, 42, 1]
+random_state_list = [2, 42, 42, 42, 50, 1]
 #8折 参数
 # random_state_list = [2, 30, 30, 30, 42, 2]
 
@@ -50,10 +50,10 @@ def K_Flod_spilt(K, fold, data, label, random_list):
 
 
 split = 10
-f = open('Accuracy_mean_5.txt', 'a')
+f = open('Accuracy_mean_6.txt', 'a')
 temp_accs = [None] * 6
 for iter_number in [2]:
-    f.write(str(split) + "-fold cross-validation\n")
+    f.write("origin "+str(split) + "-fold cross-validation\n")
 
     for key, value in test_dataset.items():
         dataset = fetch_dataset(value, verbose=False)
