@@ -33,13 +33,6 @@ random_state_list = [2, 30, 30, 30, 42, 1]
 # random_state_list = [2, 30, 30, 30, 42, 2]
 
 def K_Flod_spilt(K, fold, data, label, random_list):
-    '''
-    :param K: 要把数据集分成的份数。如十次十折取K=10
-    :param fold: 要取第几折的数据。如要取第5折则 flod=5
-    :param data: 需要分块的数据
-    :param label: 对应的需要分块标签
-    :return: 对应折的训练集、测试集和对应的标签
-    '''
     split_list = []
     kf = ShuffleSplit(K, random_state=random_list)
     for train, test in kf.split(data):
@@ -50,7 +43,7 @@ def K_Flod_spilt(K, fold, data, label, random_list):
 
 
 split = 10
-f = open('Accuracy_mean_5.txt', 'a')
+f = open('Accuracy_mean_shizhe_add.txt', 'a')
 temp_accs = [None] * 6
 for iter_number in [2]:
     f.write(str(split) + "-fold cross-validation\n")
@@ -66,7 +59,7 @@ for iter_number in [2]:
             K_test = gk.transform(G_test)
 
             # Uses the SVM classifier to perform classification
-            # clf = RandomForestClassifier(n_estimators=35, random_state=39)
+            # clf = RandomForestClassifier(n_estimators=100, random_state=39)
             # clf = AdaBoostClassifier(n_estimators=35, random_state=44)
             # SVC(kernel="precomputed")
             clf = SVC(kernel="poly")

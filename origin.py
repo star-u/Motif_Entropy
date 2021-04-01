@@ -50,7 +50,7 @@ def K_Flod_spilt(K, fold, data, label, random_list):
 
 
 split = 10
-f = open('Accuracy_mean_6.txt', 'a')
+f = open('Accuracy_mean_origin.txt', 'a')
 temp_accs = [None] * 6
 for iter_number in [2]:
     f.write("origin "+str(split) + "-fold cross-validation\n")

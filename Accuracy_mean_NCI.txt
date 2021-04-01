@@ -1,0 +1,30 @@
+10-fold cross-validation clf = AdaBoostClassifier(n_estimators=50, random_state=44)
+1: NCI109's Accuracy: 58.38%
+2: NCI1's Accuracy: 60.88%
+10-fold cross-validation
+1: NCI109's Accuracy: 58.35%
+2: NCI1's Accuracy: 58.59%
+10-fold cross-validation
+1: NCI109's Accuracy: 59.08%
+2: NCI1's Accuracy: 58.93%
+10-fold cross-validation
+1: NCI109's Accuracy: 59.9%
+2: NCI1's Accuracy: 59.1%
+10-fold cross-validation
+1: NCI109's Accuracy: 58.11%
+2: NCI1's Accuracy: 58.2%
+10-fold cross-validation
+1: NCI109's Accuracy: 58.38%
+2: NCI1's Accuracy: 58.15%
+10-fold cross-validation
+1: NCI109's Accuracy: 58.64%
+2: NCI1's Accuracy: 58.76%
+10-fold cross-validation
+1: NCI109's Accuracy: 58.45%
+2: NCI1's Accuracy: 59.56%
+10-fold cross-validation
+1: NCI109's Accuracy: 62.88%
+2: NCI1's Accuracy: 61.31%
+10-fold cross-validation
+1: NCI109's Accuracy: 65.18%
+2: NCI1's Accuracy: 65.28%

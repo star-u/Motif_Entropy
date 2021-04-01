@@ -63,7 +63,7 @@ def K_Flod_spilt(K,fold,data,label):
     train,test=split_list[2 * fold],split_list[2 * fold + 1]
     return  data[train], data[test], label[train], label[test]
 
-f = open('Accuracy_4.txt', 'a')
+f = open('Accuracy_test.txt', 'a')
 for iter_number in [2]:
     f.write("-----" + str(iter_number) + "----------------\n")
 

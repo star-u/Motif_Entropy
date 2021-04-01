@@ -18,6 +18,8 @@ from grakel.kernels.vertex_histogram import VertexHistogram
 from six import iteritems
 from six import itervalues
 
+#计算kernel matrix 主要在 fit_transform()和transform()函数
+
 test_dataset = {"1": "MUTAG", "2": "PROTEINS_full", "3": "PTC_FM", "4": "PTC_FR", "5": "PTC_MM", "6": "PTC_MR"}
                 # "7": "NCI109", "8": "NCI1"}
 count_dataset = 1
@@ -374,6 +376,7 @@ class WeisfeilerLehman(Kernel):
                     raise ValueError('parsed input is empty')
 
         nl = len(self._inv_labels[0])
+        # print(nl)
         WL_labels_inverse = {dv: idx for (idx, dv) in
                              enumerate(sorted(list(distinct_values)), nl)}
 
@@ -430,6 +433,8 @@ class WeisfeilerLehman(Kernel):
                 # print(new_graphs)
                 yield new_graphs
                 # print(L)
+
+         #计算kernel matrix
         if self._parallel is None:
             # Calculate the kernel matrix without parallelization
             K = np.sum((self.X[i].transform(g) for (i, g)

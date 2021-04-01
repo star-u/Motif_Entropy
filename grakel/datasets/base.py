@@ -371,7 +371,7 @@ def read_data(
             # print(node_labels[i][j])
             # print(j)
             # print(count_len[i - 1])
-            node_labels[i][j] = node_labels[i][j] * label_pro_list[i - 1][j]
+            node_labels[i][j] += node_labels[i][j]*round(label_pro_list[i - 1][j],2)
         count += count_len[i - 1]
     # print(new[187])
     Gs = list()
